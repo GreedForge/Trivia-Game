@@ -52,6 +52,7 @@ var numQuestions;
 
 var timerRunning = false;
 
+var clock;
 
 
 
@@ -59,15 +60,22 @@ var timerRunning = false;
 
 
 
-	function timer(){
-	  timerTime=timerTime-1;
-
-	  //Do code for showing the number of seconds here
-	}
 
 	
 // 	Functions:
-		
+
+	var time = 10;
+	function timerWrapper(){
+		clock = setInterval(timer, 1000);
+		function timer(){
+ 		time--;
+  		if (time <= 0){
+    	clearInterval(clock);
+
+  		}
+  		$("#timer").text("Timer: " + time);
+	}
+}
 // 		render question
 // 			add div time remaining to dom with associated timer
 // 			add question div taken from currentQuestion object
@@ -78,8 +86,8 @@ function renderQuestion(){
 	// timer();
 	
 
-	var counter = setInterval(timer, 1000);
-	var time = 21;
+	
+	clearInterval(clock);
 	//create overall question div
 	var question = $("<div class = 'question'></div>");
 	question.addClass(currentQuestionIndex);
@@ -94,15 +102,7 @@ function renderQuestion(){
 		question.append(answer);
 	}
 	// add timer to timer div
-	function timer(){
- 		time--;
-  		if (time <= 0){
-    	clearInterval(counter);
-
-     		return;
-  		}
-  		$("#timer").text("Timer: " + time);
-	}
+	
 
 	// add fully created question div to content area
 	$("#content-area").html(question);
@@ -110,6 +110,7 @@ function renderQuestion(){
 }
 
 renderQuestion();
+timerWrapper();
 // 		do when one of the answer divs is pressed
 // 		answer question
 // 			display right or wrong repending on answer by checking correct answer id against the data-answer-id
@@ -117,7 +118,7 @@ renderQuestion();
 // 			increment current question id
 // 			run render question
 function answerQuestion(){
-	
+		// clearInterval(counter);
 		var correctA = questions[currentQuestionIndex].correctAnwserId;
 		var test = $(this).attr("data_answer_id");
 		
