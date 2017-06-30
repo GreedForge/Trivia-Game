@@ -32,11 +32,10 @@ var currentQuestionIndex = 0;
 var currentQuestion = questions[0];
 
 // 		correct answers
-var numCorrect;
+var numCorrect = 0;
 // 		wrong answers
-var numWrong;
-// 		unanswered
-var numUnanswered;
+var numWrong = 0;
+
 
 var intervalId;
 
@@ -87,10 +86,23 @@ var stopwatch = {
         stopwatch.time--;
         if (stopwatch.time == 0) {
             ////////////////////////////////// input game over stuff
-            var gameOver = $("<h2>");
-            $(gameOver).text("Game Over");
-            $("#content-area").html(gameOver);
-            stopwatch.stop();
+            var gameOver = $("<div></div>");
+
+        var gameOverTitle = $("<h2>");
+        $(gameOverTitle).text("Game Over");
+        $(gameOver).append(gameOverTitle)
+
+        var gameOverRight = $("<p>");
+        $(gameOverRight).text("Number of Correct Answers: " + numCorrect);
+        $(gameOver).append(gameOverRight);
+
+        var gameOverWrong = $("<p>");
+        $(gameOverWrong).text("Number of Wrong Answers: " + numWrong);
+        $(gameOver).append(gameOverWrong);
+
+        $("#content-area").html(gameOver);
+
+        stopwatch.stop();
         }
 
         // DONE: Get the current time, pass that into the stopwatch.timeConverter function,
@@ -114,6 +126,7 @@ var stopwatch = {
 // 			add answer divs with data-answer-id = answer id and text equal to question object.question
 // 				also with class answers
 function renderQuestion() {
+	if (currentQuestionIndex < numQuestions) {
     stopwatch.start();
    
 
@@ -140,7 +153,27 @@ function renderQuestion() {
 
     // add fully created question div to content area
     $("#content-area").html(question);
+}
 
+else {
+	var gameOver = $("<div></div>");
+
+        var gameOverTitle = $("<h2>");
+        $(gameOverTitle).text("Game Over");
+        $(gameOver).append(gameOverTitle)
+
+        var gameOverRight = $("<p>");
+        $(gameOverRight).text("Number of Correct Answers: " + numCorrect);
+        $(gameOver).append(gameOverRight);
+
+        var gameOverWrong = $("<p>");
+        $(gameOverWrong).text("Number of Wrong Answers: " + numWrong);
+        $(gameOver).append(gameOverWrong);
+
+        $("#content-area").html(gameOver);
+
+        stopwatch.stop();
+}
 
 }
 
@@ -152,7 +185,7 @@ function renderQuestion() {
 // 			run render question
 function answerQuestion() {
 
-    if (currentQuestionIndex < numQuestions-1) {
+    if (currentQuestionIndex < numQuestions) {
     	console.log(currentQuestionIndex);
         var correctA = questions[currentQuestionIndex].correctAnwserId;
         var chosenAnswer = $(this).attr("data_answer_id");
@@ -166,20 +199,39 @@ function answerQuestion() {
             rightAnswer.append(pOne);
             $("#content-area").html(rightAnswer);
             currentQuestionIndex++;
+            numCorrect++;
             renderQuestion();
             
 
         } 
-
-    }
-    else{
+        else{
+    	numWrong++;
     	currentQuestionIndex++;
+    	renderQuestion();
+    	
     }
 
-    if (currentQuestionIndex === numQuestions) {
-        var gameOver = $("<h2>");
-        $(gameOver).text("Game Over");
+    }
+
+
+    else if (currentQuestionIndex === numQuestions) {
+
+    	var gameOver = $("<div></div>");
+
+        var gameOverTitle = $("<h2>");
+        $(gameOverTitle).text("Game Over");
+        $(gameOver).append(gameOverTitle)
+
+        var gameOverRight = $("<p>");
+        $(gameOverRight).text("Number of Correct Answers: " + numCorrect);
+        $(gameOver).append(gameOverRight);
+
+        var gameOverWrong = $("<p>");
+        $(gameOverWrong).text("Number of Wrong Answers: " + numWrong);
+        $(gameOver).append(gameOverWrong);
+
         $("#content-area").html(gameOver);
+
         stopwatch.stop();
     }
 
