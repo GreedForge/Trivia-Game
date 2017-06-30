@@ -1,143 +1,197 @@
-
 // Psudo Code
-
 // 	variables:
-
 // 		questions
 // 			array of objects, each object has a question and a set of answers and correct answer id
-
 // 			questions[
 // 				question1{
 // 					question:"is this a question",
 // 					answers["answer1", "answer2", "answer3", "answer4"],
 // 					correctAnwserId: 3
-
 // 				}
 // 			]
-var questions = [
-		{
-			name: "question1",
-			question: "this is a question",
-			answers: ["answer1", "answer2", "answer3", "answer4"],
-			correctAnwserId: 3
-		},
-		{
-			name: "question2",
-			question: "this is a question",
-			answers: ["answer1", "answer2", "answer3", "answer4"],
-			correctAnwserId: 1
-		},
-		{
-			name: "question3",
-			question: "this is a question",
-			answers:["answer1", "answer2", "answer3", "answer4"],
-			correctAnwserId: 2
-		}
-];
+var questions = [{
+    name: "question1",
+    question: "Who played the 7th Samurai in 7 Samurai?",
+    answers: ["Takashi Shimura", "Tatsuya Nakadai", "Keanu Reeves", "Toshirō Mifune"],
+    correctAnwserId: 3
+}, {
+    name: "question2",
+    question: "Who was the director of Birds?",
+    answers: ["Billy Wilder", "Alfred Hitchock", "Christopher Nolan", "David Fincher"],
+    correctAnwserId: 1
+}, {
+    name: "question3",
+    question: "Who is widely considered to be the most influencial film Martial Artist?",
+    answers: ["Jackie Chan", "Jet Lee", "Bruce Lee", "Tony Jaa"],
+    correctAnwserId: 2
+}];
 // 		currentquestionindex
-var currentQuestionIndex = 0
+var currentQuestionIndex = 0;
 // 		currentQuestion
 // 			stores current question object
 var currentQuestion = questions[0];
-// 		timerTime, amount of time for questions
-var timerTime;
+
 // 		correct answers
 var numCorrect;
 // 		wrong answers
 var numWrong;
 // 		unanswered
 var numUnanswered;
-// 		numquestions
-var numQuestions;
 
-var timerRunning = false;
+var intervalId;
 
-var clock;
-
-
-
- //1000 will  run it every 1 second
+var numQuestions = 3;
+//prevents the clock from being sped up unnecessarily
+var clockRunning = false;
 
 
+//1000 will  run it every 1 second
+
+var stopwatch = {
+
+    time: 100,
+
+    getTime: function() {
+        return stopwatch.time;
+    },
+
+    reset: function() {
+
+        stopwatch.time = 10;
 
 
-	
+        // DONE: Change the "display" div to "00:00."
+
+
+        // DONE: Empty the "laps" div.
+
+    },
+    start: function() {
+
+        // DONE: Use setInterval to start the count here and set the clock to running.
+        if (!clockRunning) {
+            intervalId = setInterval(stopwatch.count, 1000);
+            clockRunning = true;
+        }
+    },
+    stop: function() {
+
+        // DONE: Use clearInterval to stop the count here and set the clock to not be running.
+        clearInterval(intervalId);
+        clockRunning = false;
+    },
+
+    count: function() {
+
+        // DONE: increment time by 1, remember we cant use "this" here.
+        stopwatch.time--;
+        if (stopwatch.time == 0) {
+            ////////////////////////////////// input game over stuff
+            var gameOver = $("<h2>");
+            $(gameOver).text("Game Over");
+            $("#content-area").html(gameOver);
+            stopwatch.stop();
+        }
+
+        // DONE: Get the current time, pass that into the stopwatch.timeConverter function,
+        //       and save the result in a variable.
+
+
+        // DONE: Use the variable we just created to show the converted time in the "display" div.
+        $("#timer").html("Time Left: " + stopwatch.time);
+    },
+
+};
+
+
+
 // 	Functions:
 
-	var time = 10;
-	function timerWrapper(){
-		clock = setInterval(timer, 1000);
-		function timer(){
- 		time--;
-  		if (time <= 0){
-    	clearInterval(clock);
 
-  		}
-  		$("#timer").text("Timer: " + time);
-	}
-}
 // 		render question
 // 			add div time remaining to dom with associated timer
 // 			add question div taken from currentQuestion object
 // 			add answer divs with data-answer-id = answer id and text equal to question object.question
 // 				also with class answers
-function renderQuestion(){
-	
-	// timer();
-	
+function renderQuestion() {
+    stopwatch.start();
+   
 
-	
-	clearInterval(clock);
-	//create overall question div
-	var question = $("<div class = 'question'></div>");
-	question.addClass(currentQuestionIndex);
-	//create question text paragraph
-	var pOne = $("<p>").text("Question: " + questions[currentQuestionIndex].question);
-	question.append(pOne);
-	//add answer paragraphs to question div
-	for(var i = 0; i < 4; i++){
-		var answer = $("<div data_answer_id = " + i + "></div>");
-		answer.addClass("answer")
-		answer.text(questions[currentQuestionIndex].answers[i]);
-		question.append(answer);
-	}
-	// add timer to timer div
-	
+    // timer();
 
-	// add fully created question div to content area
-	$("#content-area").html(question);
+    $(".clickToStart").attr("class", "is-hidded").html("");
+
+
+    //create overall question div
+    var question = $("<div class = 'question'></div>");
+    question.addClass(currentQuestionIndex);
+    //create question text paragraph
+    var pOne = $("<p>").text("Question: " + questions[currentQuestionIndex].question);
+    question.append(pOne);
+    //add answer paragraphs to question div
+    for (var i = 0; i < 4; i++) {
+        var answer = $("<div data_answer_id = " + i + "></div>");
+        $(answer).attr("class", "answerClass");
+        answer.text(questions[currentQuestionIndex].answers[i]);
+        question.append(answer);
+    }
+    // add timer to timer div
+
+
+    // add fully created question div to content area
+    $("#content-area").html(question);
+
 
 }
 
-renderQuestion();
-timerWrapper();
 // 		do when one of the answer divs is pressed
 // 		answer question
 // 			display right or wrong repending on answer by checking correct answer id against the data-answer-id
 // 			increment correct, wrong, or unanswered depending
 // 			increment current question id
 // 			run render question
-function answerQuestion(){
-		// clearInterval(counter);
-		var correctA = questions[currentQuestionIndex].correctAnwserId;
-		var test = $(this).attr("data_answer_id");
-		
+function answerQuestion() {
 
-	if(test == correctA){
-		console.log(test);
-		var rightAnswer = $("<div></div>");
-		var pOne = $("<h2>").text("Correct!");
-		rightAnswer.append(pOne);
-		var pTwo = $("<p class = 'click_here'>").text("Click here for next question");
-		rightAnswer.append(pTwo);
-		$("#content-area").html(rightAnswer);
-		currentQuestionIndex++;
-		time = 21;
-	}
+    if (currentQuestionIndex < numQuestions-1) {
+    	console.log(currentQuestionIndex);
+        var correctA = questions[currentQuestionIndex].correctAnwserId;
+        var chosenAnswer = $(this).attr("data_answer_id");
+        console.log("correct Answer: " + correctA);
+        console.log("chosen answer: " + chosenAnswer);
+
+        if (chosenAnswer.toString() === correctA.toString()) {
+        	console.log("we get here?");
+            var rightAnswer = $("<div></div>");
+            var pOne = $("<h2>").text("Correct!");
+            rightAnswer.append(pOne);
+            $("#content-area").html(rightAnswer);
+            currentQuestionIndex++;
+            renderQuestion();
+            
+
+        } 
+
+    }
+    else{
+    	currentQuestionIndex++;
+    }
+
+    if (currentQuestionIndex === numQuestions) {
+        var gameOver = $("<h2>");
+        $(gameOver).text("Game Over");
+        $("#content-area").html(gameOver);
+        stopwatch.stop();
+    }
+
+
+
 }
 
+
+
+
 // 			if time runs out change content area div to time ran out page for that question and display answer
-		
+
 // 		do if correct answers + wrong answers + unaswered = numquestions
 // 		gameover
 // 			write over content area, game over
@@ -154,5 +208,8 @@ function answerQuestion(){
 
 // 		if clicked item has class reset run reset
 
-$(document).on("click", ".answer" ,  answerQuestion);
-$(document).on("click", ".click_here", renderQuestion);
+
+
+$("#content-area").on("click", ".answerClass" , answerQuestion);
+
+$(".clickToStart").on("click", renderQuestion);
