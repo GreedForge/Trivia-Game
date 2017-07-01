@@ -1,13 +1,16 @@
 .question{
 	font-size:  32px;
+	font-weight: bold;
 }
 
 .answerClass{
 	font-size: 28px;
+	font-weight: normal;
 }
 
 #timer{
 	font-size: 28px;
+	border: 2px solid black;
 }
 .wrapper{
 	background-size: cover;
@@ -17,4 +20,17 @@
 html, body {
     margin: 0;
     height: 100%;
+    font-family: 'Raleway', sans-serif;
+}
+
+.box{
+	background-color: rgba(64,224,208, .5);
+	color: black;
+}
+
+.title{
+	color: rgba(64,224,208, 1);
+	font-weight: bolder;
+	font-size: 100px;
+
 }

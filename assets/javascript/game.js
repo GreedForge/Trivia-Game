@@ -113,6 +113,7 @@ var stopwatch = {
 
 
         // DONE: Use the variable we just created to show the converted time in the "display" div.
+        $("#timer").removeClass("is-hidden");
         $("#timer").html("Time Left: " + stopwatch.time);
     },
 
@@ -135,7 +136,7 @@ function renderQuestion() {
 
     // timer();
 
-    $(".clickToStart").attr("class", "is-hidded").html("");
+    $(".clickToStart").attr("class", "is-hidden").html("");
 
 
     //create overall question div
