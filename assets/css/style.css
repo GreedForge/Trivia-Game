@@ -9,3 +9,12 @@
 #timer{
 	font-size: 28px;
 }
+.wrapper{
+	background-size: cover;
+	height: 100%;
+
+}
+html, body {
+    margin: 0;
+    height: 100%;
+}

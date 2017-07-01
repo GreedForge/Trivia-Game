@@ -13,17 +13,20 @@ var questions = [{
     name: "question1",
     question: "Who played the 7th Samurai in 7 Samurai?",
     answers: ["Takashi Shimura", "Tatsuya Nakadai", "Keanu Reeves", "Toshirō Mifune"],
-    correctAnwserId: 3
+    correctAnwserId: 3,
+    background: "assets/images/sevenSamuraiBackground.jpg"
 }, {
     name: "question2",
     question: "Who was the director of Birds?",
     answers: ["Billy Wilder", "Alfred Hitchock", "Christopher Nolan", "David Fincher"],
-    correctAnwserId: 1
+    correctAnwserId: 1,
+    background: "assets/images/theBirdsBackground.jpg"
 }, {
     name: "question3",
     question: "Who is widely considered to be the most influencial film Martial Artist?",
     answers: ["Jackie Chan", "Jet Lee", "Bruce Lee", "Tony Jaa"],
-    correctAnwserId: 2
+    correctAnwserId: 2,
+    background: "assets/images/enterTheDragonBackground.jpg"
 }];
 // 		currentquestionindex
 var currentQuestionIndex = 0;
@@ -153,6 +156,7 @@ function renderQuestion() {
 
     // add fully created question div to content area
     $("#content-area").html(question);
+    $(".wrapper").css("background-image", "url(" + questions[currentQuestionIndex].background + ")");
 }
 
 else {
